@@ -1,0 +1,32 @@
+-- Script hỗ trợ up V4 trong Blox Fruits
+-- Tự động dịch chuyển đến Temple of Time + vào Trial khi trăng tròn
+
+repeat wait() until game:IsLoaded()
+
+-- Cài đặt
+local TeleportTemple = true -- Tự động đến Temple of Time
+local AutoTrial = true      -- Tự động vào Trial khi trăng tròn
+
+-- Di chuyển đến Temple of Time
+spawn(function()
+    while wait(1) do
+        if TeleportTemple and game.Players.LocalPlayer.Team == "Pirates" then
+            local templeCFrame = CFrame.new(28242, 14894, -7335) -- Temple of Time
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = templeCFrame
+        end
+    end
+end)
+
+-- Tự động vào Trial khi trăng tròn
+spawn(function()
+    while AutoTrial do
+        wait(10)
+        local moon = game.Lighting:FindFirstChild("OutdoorLighting")
+        if moon and moon.ClockTime >= 18 and moon.ClockTime <= 19 then
+            local door = workspace:FindFirstChild("Map"):FindFirstChild("Temple"):FindFirstChild("TrialDoor")
+            if door and door:FindFirstChild("ClickDetector") then
+                fireclickdetector(door.ClickDetector)
+            end
+        end
+    end
+end)
